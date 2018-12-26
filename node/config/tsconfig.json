@@ -11,6 +11,7 @@
                 "../../node_modules/*"
             ]
         },
+        "jsx": "react",
         "typeRoots" : ["./typings"],
         "noImplicitAny": false,
         "experimentalDecorators": true,
@@ -18,6 +19,7 @@
     },
     "include": [
         "../src/**/*",
+        // "../shared_src/**/*",
         "typings/**/*"
     ]
 }

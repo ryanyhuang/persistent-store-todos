@@ -10,7 +10,7 @@ class App extends React.Component {
         return (
             <div>
                 <InfoNavbar>
-                    <SplitPane defaultSize="50%">
+                    {/* <SplitPane defaultSize="50%"> */}
                         <div>
                             <AddTodo />
                             <Todos />
@@ -18,7 +18,7 @@ class App extends React.Component {
                         <div>
                             <DoneTodos />
                         </div>
-                    </SplitPane>
+                    {/* </SplitPane> */}
                     
                 </InfoNavbar>
             </div>

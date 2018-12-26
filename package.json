@@ -103,7 +103,7 @@
     "node-build": "npm run node-clean && npm run node-build-ts",
     "node-build-ts": "tsc --p node/config/tsconfig.json",
     "node-lint": "tslint -c tslint.json -p node/config/tsconfig.json",
-    "node-watch": "concurrently -k -p \"[{name}]\" -n \"Type,Node\" -c \"cyan.bold,green.bold\" \"npm run node-watch-ts\" \"nodemon dist-node/server.js -q\" --kill-others",
+    "node-watch": "concurrently -k -p \"[{name}]\" -n \"Type,Node\" -c \"cyan.bold,green.bold\" \"npm run node-watch-ts\" \"nodemon dist-node/node/src/server.js -q\" --kill-others",
     "node-watch-ts": "tsc -w --p node/config/tsconfig.json",
     "node-test": "jest node"
   }
