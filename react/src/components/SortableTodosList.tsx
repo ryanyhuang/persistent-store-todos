@@ -3,6 +3,7 @@ import Todo from '../models/Todo'
 import {
     SortableContainer,
     SortableElement,
+    SortEventWithTag,
 } from 'react-sortable-hoc';
 import { connect } from 'react-redux'
 import { changeTodosOrder } from '../actions/todos'
@@ -43,8 +44,12 @@ class SortableTodosList extends React.Component<Props, State> {
             );
         });
 
+        const shouldCancel = (e: SortEventWithTag) => {
+            return ['button', 'span'].indexOf(e.target.tagName.toLowerCase()) !== -1;
+        }
+
         return (
-            <SortableList items={todos} onSortEnd={this.onSortEnd} useDragHandle={true} />
+            <SortableList items={todos} onSortEnd={this.onSortEnd} shouldCancelStart={shouldCancel}/>
         );
     }
 

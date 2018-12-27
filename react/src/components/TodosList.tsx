@@ -8,7 +8,6 @@ import {
     Intent,
 } from '@blueprintjs/core';
 import SortableTodosList from './SortableTodosList';
-import { SortableHandle } from 'react-sortable-hoc';
 
 interface Props {
   todos: Todo[],
@@ -31,11 +30,9 @@ export default class TodosList extends React.Component<Props, State> {
 
     getCardInner = (todo: Todo) => {
         const { onTodoClicked } = this.props;
-        const DragHandle = SortableHandle(() => <span>::</span>); // This can be any component you want
         if(!todo.done) {
             return (
                 <Card key={todo.id} style={{ margin: 5 }}>
-                    <DragHandle/>
                     <Button onClick={() => onTodoClicked(todo.id)}>Done</Button>
                     <H1>{todo.name}</H1>
                     <EditableText
