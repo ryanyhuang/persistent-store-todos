@@ -8,20 +8,24 @@ import SplitPane from 'react-split-pane'
 class App extends React.Component {
     render() {
         return (
-            <div>
-                <InfoNavbar>
-                    {/* <SplitPane defaultSize="50%"> */}
-                        <div>
+            <InfoNavbar>
+                {/* <SplitPane defaultSize="50%"> */}
+                    <div className="box">
+                        <div className="rowc" style={{
+                                    backgroundColor: 'pink',
+                                }}>
                             <AddTodo />
                             <Todos />
                         </div>
-                        <div>
+                        <div className="rowc" style={{
+                                    backgroundColor: 'lightgreen',
+                                }}>
                             <DoneTodos />
                         </div>
-                    {/* </SplitPane> */}
-                    
-                </InfoNavbar>
-            </div>
+                    </div>
+                {/* </SplitPane> */}
+                
+            </InfoNavbar>
         );
     }
 }

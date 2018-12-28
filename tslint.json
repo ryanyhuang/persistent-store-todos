@@ -80,7 +80,7 @@
         "semicolon": [true, "always"],
         "switch-default": true,
 
-        "trailing-comma": [true, {"multiline": "never", "singleline": "never"}],
+        "trailing-comma": [false, {"multiline": "never", "singleline": "never"}],
 
         "triple-equals": [ true, "allow-null-check" ],
         "typedef": [

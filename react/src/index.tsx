@@ -9,10 +9,17 @@ import logger from 'redux-logger'
 import { createStore, Action, applyMiddleware, Middleware } from 'redux'
 import { State, reducer } from './reducers'
 import App from './components/App'
+import Cookies from 'js-cookie'
+import * as Uuid from 'uuid'
+
+// if(Cookies.get('userid') === undefined) {
+//     Cookies.set('userid', Uuid.v1());
+// }
+Cookies.remove('userid');
 
 declare global {
     interface Window {
-        __PRELOADED_STATE__: any;
+        __PRELOADED_STATE__: State;
     }
 }
 
@@ -22,7 +29,7 @@ const preloadedState = window.__PRELOADED_STATE__;
 // Allow the passed state to be garbage-collected
 delete window.__PRELOADED_STATE__;
 
-const loggerMiddleware: Middleware = store => next =>  <A extends Action>(action: A): A => {
+const posterMiddleware: Middleware = store => next =>  <A extends Action>(action: A): A => {
     axios.post('/db_dispatch', action)
         .then(res => {
             console.log(res.data);
@@ -37,7 +44,7 @@ const loggerMiddleware: Middleware = store => next =>  <A extends Action>(action
 const store = createStore<State>(
     reducer,
     preloadedState,
-    applyMiddleware(logger, loggerMiddleware),
+    applyMiddleware(logger, posterMiddleware),
 );
 
 // Create Redux store with initial state

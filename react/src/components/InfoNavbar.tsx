@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from 'react';
 import {
     Alignment,
     Button,
@@ -13,7 +13,7 @@ class InfoNavbar extends React.Component {
     public render() {
         return (
             <div>
-                <Navbar>
+                <Navbar fixedToTop={true}>
                     <NavbarGroup align={Alignment.LEFT}>
                         <NavbarHeading>Todos</NavbarHeading>
                         <NavbarDivider />
@@ -21,8 +21,8 @@ class InfoNavbar extends React.Component {
                         <Button className={Classes.MINIMAL} icon="document" text="Files" />
                     </NavbarGroup>
                 </Navbar>
-
-                {this.props.children}
+                
+                <div>{this.props.children}</div>
             </div>
         );
     }

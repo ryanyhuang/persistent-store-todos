@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as compression from 'compression';
 import * as session from 'express-session';
 import * as bodyParser from 'body-parser';
+import * as cookieParser from 'cookie-parser';
 import * as logger from 'morgan';
 import * as errorHandler from 'errorhandler';
 import * as lusca from 'lusca';
@@ -15,12 +16,9 @@ import * as React from 'react'
 import { renderToString } from 'react-dom/server'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
-// import { State, reducer } from './reducers'
-// import InfoNavbar from './components/InfoNavbar'
-// import App from './components/App'
 import { State, reducer } from '../../react/src/reducers'
-// import InfoNavbar from '../../shared_src/components/InfoNavbar'
 import App from '../../react/src/components/App'
+import * as randomWords from 'random-words'
 
 if (process.env.NODE_ENV !== 'production') {
 	dotenv.config({ path: '.env' });
@@ -36,6 +34,7 @@ app.use(compression());
 app.use(logger('dev'));
 app.use(bodyParser.json());	
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(expressValidator());
 app.use(session({
 	resave: true,
@@ -54,9 +53,10 @@ app.get('/api/getList', (req, res) => {
 });
 
 app.post('/db_dispatch', (req, res) => {
+    console.log();
+    console.log(req.cookies);
     console.log(req.body);
     res.json({success: true});
-    console.log('posted');
 });
 
 // Handles any requests that don't match the ones above
@@ -67,20 +67,28 @@ app.post('/db_dispatch', (req, res) => {
 app.use('/images', express.static(path.join(__dirname, '../../..', 'dist-react', 'images'), { maxAge: 31557600000 }));
 app.use('/libs', express.static(path.join(__dirname, '../../..', 'dist-react', 'libs'), { maxAge: 31557600000 }));
 app.use('/static', express.static(path.join(__dirname, '../../..', 'dist-react', 'static'), { maxAge: 31557600000 }));
-app.use('/css/index.css', (req, res) => res.sendFile(path.join(__dirname, '../../..', 'css', 'index.css')));
-app.use('/css/blueprint-icons.css', (req, res) => res.sendFile(path.join(__dirname, '../../..', "node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css")));
-app.use('/css/blueprint.css', (req, res) => res.sendFile(path.join(__dirname, '../../..', "node_modules/@blueprintjs/core/lib/css/blueprint.css")));
-app.use('/dist-react/static/js/main.42d542fd.js', (req, res) => res.sendFile(path.join(__dirname, '../../..', "/dist-react/static/js/main.42d542fd.js")));
-app.use('/css/blueprint-icons.css.map', (req, res) => res.sendFile(path.join(__dirname, '../../..', "node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css.map")));
-app.use('/css/blueprint.css.map', (req, res) => res.sendFile(path.join(__dirname, '../../..', "node_modules/@blueprintjs/core/lib/css/blueprint.css.map")));
-app.use('/dist-react/static/js/main.42d542fd.js.map', (req, res) => res.sendFile(path.join(__dirname, '../../..', "/dist-react/static/js/main.42d542fd.js.map")));
+app.use('/dist-react/static', express.static(path.join(__dirname, '../../..', 'dist-react', 'static'), { maxAge: 31557600000 }));
+// app.use('/dist-react/static/js/main.js', (req, res) => res.sendFile(path.join(__dirname, '../../..', "/dist-react/static/js/main.js")));
+// app.use('/dist-react/static/js/main.js.map', (req, res) => res.sendFile(path.join(__dirname, '../../..', "/dist-react/static/js/main.js.map")));
+// app.use('/dist-react/static/css/main.css', (req, res) => res.sendFile(path.join(__dirname, '../../..', "/dist-react/static/css/main.css")));
 // app.get('*', (req, res) => res.sendFile(path.join(__dirname, '../../..', 'dist-react', 'index.html')));
 
 // We are going to fill these out in the sections to follow
 function handleRender(req, res) {
-    console.log(req.params.url);
-    // Create a new Redux store instance
-    const store = createStore(reducer, {
+    const randomWordConfig = {
+        exactly: 1,
+        wordsPerString: 3,
+        formatter: (word: string, index: number) => {
+            return word.slice(0,1).toUpperCase().concat(word.slice(1));
+        },
+        separator: '',
+    };
+    console.log(randomWords(randomWordConfig)[0]);
+
+    console.log(req.cookies);
+    console.log();
+
+    const loadedStore = {
         todos: {
 			todos: [
                 {
@@ -105,17 +113,19 @@ function handleRender(req, res) {
                 },
             ],
 		},
-    });
+    };
+    // Create a new Redux store instance
+    const beStore = createStore(reducer, loadedStore);
   
     // Render the component to a string
     const html = renderToString(
-        <Provider store={store}>
+        <Provider store={beStore}>
             <App />
         </Provider>
     );
 
     // // Grab the initial state from our Redux store
-    const preloadedState = store.getState()
+    const preloadedState = beStore.getState()
 
     // const html = '<div>Hello!</div>';
     // const preloadedState = {todos: {todos: []}};
@@ -124,13 +134,13 @@ function handleRender(req, res) {
     res.send(renderFullPage(html, preloadedState))
 }
 
-function renderFullPage(html, preloadedState) {
+function renderFullPage(html:string, preloadedState: State) {
     return `
         <!doctype html>
         <html>
             <head>
-                <title>Redux Universal Example</title>
-                <link rel="stylesheet" type="text/css" href="./css/index.css">
+                <title>SSR Redux Universal Example</title>
+                <link rel="stylesheet" type="text/css" href="../dist-react/static/css/main.css">
             </head>
             <body>
                 <div id="root">${html}</div>
@@ -142,7 +152,7 @@ function renderFullPage(html, preloadedState) {
                         '\\u003c'
                     )}
                 </script>
-                <script src="../dist-react/static/js/main.42d542fd.js"></script>
+                <script src="../dist-react/static/js/main.js"></script>
             </body>
         </html>
     `

@@ -14,7 +14,7 @@
 		"dist-react/": true,
 		".vscode/": true,
 		".gitignore": true,
-		"tslint.json": true,
+		"tslint.json": false,
 		"README.md": true,
 		"package-lock.json": true
 	},
