@@ -75,20 +75,26 @@ app.use('/dist-react/static', express.static(path.join(__dirname, '../../..', 'd
 
 // We are going to fill these out in the sections to follow
 function handleRender(req, res) {
-    const randomWordConfig = {
-        exactly: 1,
-        wordsPerString: 3,
-        formatter: (word: string, index: number) => {
-            return word.slice(0,1).toUpperCase().concat(word.slice(1));
-        },
-        separator: '',
-    };
-    console.log(randomWords(randomWordConfig)[0]);
+    let boardId = req.cookies.boardId;
+    if(boardId === undefined) {
+        const randomWordConfig = {
+            exactly: 1,
+            wordsPerString: 3,
+            formatter: (word: string, index: number) => {
+                return word.slice(0,1).toUpperCase().concat(word.slice(1));
+            },
+            separator: '',
+        };
+        boardId = randomWords(randomWordConfig)[0];
+    }
 
     console.log(req.cookies);
     console.log();
 
     const loadedStore = {
+        boardInfo: {
+            boardId,
+        },
         todos: {
 			todos: [
                 {
@@ -113,7 +119,7 @@ function handleRender(req, res) {
                 },
             ],
 		},
-    };
+    } as State;
     // Create a new Redux store instance
     const beStore = createStore(reducer, loadedStore);
   

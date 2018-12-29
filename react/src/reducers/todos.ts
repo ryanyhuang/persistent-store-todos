@@ -1,12 +1,12 @@
-import Todo from '../models/Todo'
-import { ActionTypes, Action } from '../actions/todos'
+import Todo from '../models/Todo';
+import { ActionTypes, Action } from '../actions/todos';
 import {
     arrayMove,
 } from 'react-sortable-hoc';
 
 // Define our State interface for the current reducer
 export interface State {
-  todos: Todo[]
+  todos: Todo[];
 }
 
 // Define our initialState
@@ -54,11 +54,6 @@ export function reducer(state: State = initialState, action: Action) {
   switch (action.type) {
 
     case ActionTypes.ADD_TODO: {
-        /*
-        * We have autocompletion here
-        * Typescript knows the action is type of AddTodoAction thanks to the ActionTypes enum
-        * todo is type of Todo
-        */
         const todo = action.payload.todo;
 
         return {
@@ -68,11 +63,6 @@ export function reducer(state: State = initialState, action: Action) {
     }
 
     case ActionTypes.TOGGLE_TODO: {
-        /*
-        * This is the same as 
-        * const todoId = action.payload.todoId
-        */
-
         const { todoId } = action.payload;
         const toToggle = state.todos.find((todo) => todo.id === todoId);
         if (toToggle === undefined) {
@@ -87,8 +77,6 @@ export function reducer(state: State = initialState, action: Action) {
 
     case ActionTypes.CHANGE_TODOS_ORDER: {
         const { oldIndex, newIndex } = action.payload;
-        // instead of arraymove
-        // check done or not, then remove, and place after 3 dones, or 3 not dones
         return {
             ...state,
             todos: arrayMove(state.todos, oldIndex, newIndex),
