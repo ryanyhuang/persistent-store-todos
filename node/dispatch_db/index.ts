@@ -11,7 +11,7 @@ const pool = mysql.createPool({
 	connectionLimit: 10,
 });
 
-export const getStateFromDB = async (key: string): Promise<any> => {
+export const getStateFromDB = async (key: string): Promise<State> => {
 	return await pool.query(`SELECT * FROM dispatch_db WHERE id = '${key}'`)
 		.then((resp) => {
 			if(resp.length === 0) {

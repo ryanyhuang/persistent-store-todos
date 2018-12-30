@@ -24,8 +24,10 @@ const preloadedState = window.__PRELOADED_STATE__;
 // Allow the passed state to be garbage-collected
 delete window.__PRELOADED_STATE__;
 
-const boardId = preloadedState.boardInfo.boardId;
-Cookies.set('boardId', boardId);
+if (preloadedState !== undefined) {
+    const boardId = preloadedState.boardInfo.boardId;
+    Cookies.set('boardId', boardId);
+}
 
 const posterMiddleware: Middleware = store => next =>  <A extends Action>(action: A): A => {
     axios.post('/db_dispatch', action)
@@ -51,7 +53,7 @@ ReactDOM.hydrate(
         <App />
     </Provider>,
     document.getElementById('root'),
-)
+);
 
 // ReactDOM.render(
 //     <Provider store={store}>
@@ -60,4 +62,4 @@ ReactDOM.hydrate(
 //     document.getElementById('root') as HTMLElement
 // );
 
-registerServiceWorker()
+registerServiceWorker();

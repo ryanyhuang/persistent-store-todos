@@ -3,7 +3,7 @@ import Todo from '../models/Todo'
 import {
     Button,
     Card,
-    H1,
+    Intent,
 } from '@blueprintjs/core';
 import SortableTodosList from './SortableTodosList';
 
@@ -31,9 +31,20 @@ export default class DoneTodosList extends React.Component<Props, State> {
         if(todo.done) {
             return (
                 <Card style={{ margin: 5 }}>
-                    <Button onClick={() => onTodoClicked(todo.id)}>Not Done</Button>
-                    <H1 style={{ textDecoration: 'line-through'}}>{todo.name}</H1>
-                    {String(todo.done)}
+                    <Button
+                        style={{float: 'right'}}
+                        icon="arrow-left"
+                        onClick={() => onTodoClicked(todo.id)}
+                        intent={Intent.DANGER}
+                    />
+                    <div>
+                        <b style={{
+                            textDecoration: 'line-through',
+                            fontSize: 20,
+                        }}>
+                            {todo.name}
+                        </b>
+                    </div>
                 </Card>
             );
         }

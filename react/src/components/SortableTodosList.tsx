@@ -45,7 +45,7 @@ class SortableTodosList extends React.Component<Props, State> {
         });
 
         const shouldCancel = (e: SortEventWithTag) => {
-            return ['button', 'span'].indexOf(e.target.tagName.toLowerCase()) !== -1;
+            return ['button', 'span', 'svg', 'path', 'desc'].indexOf(e.target.tagName.toLowerCase()) !== -1;
         }
 
         return (

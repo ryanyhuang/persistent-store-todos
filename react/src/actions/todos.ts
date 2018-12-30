@@ -52,7 +52,8 @@ export function addTodo(name: string): AddTodoAction {
             todo: {
                 id: Uuid.v1(),
                 name: name,
-                done: false
+                done: false,
+                dueDate: null,
             }
         }
     };

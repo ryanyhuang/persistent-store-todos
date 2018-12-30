@@ -7,6 +7,7 @@
   "proxy": "http://localhost:3000",
   "dependencies": {
     "@blueprintjs/core": "^3.10.0",
+    "@blueprintjs/datetime": "^3.5.0",
     "@blueprintjs/icons": "^3.4.0",
     "@types/body-parser": "^1.17.0",
     "@types/compression": "0.0.33",

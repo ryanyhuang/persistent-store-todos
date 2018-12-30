@@ -16,31 +16,37 @@ export const initialState: State = {
             id: '10',
             name: 'task1',
             done: false,
+            dueDate: null
         },
         {
             id: '11',
             name: 'task2',
             done: true,
+            dueDate: null
         },
         {
             id: '12',
             name: 'task3',
             done: false,
+            dueDate: null
         },
         {
             id: '13',
             name: 'task4',
             done: true,
+            dueDate: null
         },
         {
             id: '14',
             name: 'task5',
             done: false,
+            dueDate: null
         },
         {
             id: '15',
             name: 'task6',
             done: true,
+            dueDate: null
         },
     ] // We don't have any todos at the start of the app
 }
