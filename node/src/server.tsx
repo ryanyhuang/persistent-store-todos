@@ -29,7 +29,6 @@ if (process.env.NODE_ENV !== 'production') {
 
 const app = express();
 
-
 app.set('port', process.env.PORT || 3000);
 
 app.use(compression());
@@ -55,9 +54,8 @@ app.get('/api/getList', (req, res) => {
 });
 
 app.post('/db_dispatch', (req, res) => {
-    console.log();
-    console.log(req.cookies);
-    console.log(req.body);
+    let boardId = req.cookies.boardId;
+    DispatchDB.dispatchActionToDB(boardId, req.body);
     res.json({success: true});
 });
 
@@ -76,11 +74,9 @@ app.use('/dist-react/static', express.static(path.join(__dirname, '../../..', 'd
 // app.get('*', (req, res) => res.sendFile(path.join(__dirname, '../../..', 'dist-react', 'index.html')));
 
 // We are going to fill these out in the sections to follow
-function handleRender(req, res) {
-    console.log(DispatchDB);
-
+async function handleRender(req, res) {
     let boardId = req.cookies.boardId;
-    if(boardId === undefined) {
+    if (boardId === undefined) {
         const randomWordConfig = {
             exactly: 1,
             wordsPerString: 3,
@@ -90,43 +86,31 @@ function handleRender(req, res) {
             separator: '',
         };
         boardId = randomWords(randomWordConfig)[0];
+
+        const newStore = {
+            boardInfo: {
+                boardId,
+            },
+            todos: {
+                todos: [
+                    {
+                        id: '10',
+                        name: 'complete me!',
+                        done: false,
+                    },
+                ],
+            },
+        } as State;
+        
+        console.log(`creating new board: ${boardId}`);
+        await DispatchDB.setStateToDB(boardId, newStore);
     }
 
-    console.log(req.cookies);
-    console.log();
+    const loadedStore = await DispatchDB.getStateFromDB(boardId);
 
-    const loadedStore = {
-        boardInfo: {
-            boardId,
-        },
-        todos: {
-			todos: [
-                {
-                    id: '10',
-                    name: 'task1',
-                    done: false,
-                },
-                {
-                    id: '11',
-                    name: 'task2',
-                    done: true,
-                },
-                {
-                    id: '14',
-                    name: 'task5',
-                    done: false,
-                },
-                {
-                    id: '15',
-                    name: 'task6',
-                    done: true,
-                },
-            ],
-		},
-    } as State;
     // Create a new Redux store instance
     const beStore = createStore(reducer, loadedStore);
-  
+
     // Render the component to a string
     const html = renderToString(
         <Provider store={beStore}>
