@@ -19,6 +19,7 @@ import { Provider } from 'react-redux'
 import { State, reducer } from '../../react/src/reducers'
 import App from '../../react/src/components/App'
 import * as randomWords from 'random-words'
+import * as DispatchDB from '../dispatch_db'
 
 if (process.env.NODE_ENV !== 'production') {
 	dotenv.config({ path: '.env' });
@@ -27,6 +28,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const app = express();
+
 
 app.set('port', process.env.PORT || 3000);
 
@@ -75,6 +77,8 @@ app.use('/dist-react/static', express.static(path.join(__dirname, '../../..', 'd
 
 // We are going to fill these out in the sections to follow
 function handleRender(req, res) {
+    console.log(DispatchDB);
+
     let boardId = req.cookies.boardId;
     if(boardId === undefined) {
         const randomWordConfig = {
@@ -161,11 +165,12 @@ function renderFullPage(html:string, preloadedState: State) {
                 <script src="../dist-react/static/js/main.js"></script>
             </body>
         </html>
-    `
+    `;
 }
 
 // This is fired every time the server side receives a request
-app.use(handleRender)
+// app.use(handleRender)
+app.get('/', handleRender);
 
 // if (process.env.NODE_ENV === 'production') {
 // 	app.use('/images', express.static(path.join(__dirname, '../../..', 'dist-react', 'images'), { maxAge: 31557600000 }));
