@@ -1,9 +1,9 @@
 {
-  "name": "typescript-fullstack-boilerplate",
-  "version": "0.1.0",
+  "name": "persistent-store-todos",
+  "version": "0.0.1",
   "private": true,
-  "description": "Node + React + Redux with Typescript",
-  "author": "Matko Raguz, Axilis",
+  "description": "A todos app built on top of a persistent store framework",
+  "author": "Huang, Ryan",
   "proxy": "http://localhost:3000",
   "dependencies": {
     "@blueprintjs/core": "^3.10.0",

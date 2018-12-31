@@ -2,11 +2,16 @@ import { State, reducer } from '../../react/src/reducers'
 import { Action } from '../../react/src/actions/todos'
 import * as mysql from 'promise-mysql'
 import { createStore } from 'redux'
+import * as dotenv from 'dotenv';
+
+if (process.env.NODE_ENV !== 'production') {
+	dotenv.config({ path: '.env' });
+}
 
 const pool = mysql.createPool({
 	host: 'localhost',
 	user: 'root',
-	password: 'ryhryh114',
+	password: process.env.DB_PASSWORD,
 	database: 'todos',
 	connectionLimit: 10,
 });

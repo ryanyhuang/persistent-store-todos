@@ -41,6 +41,11 @@ export default class TodosList extends React.Component<Props, State> {
                 onChange={(date: Date) => console.log(date)}
             />
         );
+        console.log(todo.dueDate);
+        let dateStr = "No date";
+        if (todo.dueDate !== null) {
+            dateStr = todo.dueDate.toLocaleString();
+        }
         if(!todo.done) {
             return (
                 <Card key={todo.id} style={{ margin: 5 }}>
@@ -69,7 +74,7 @@ export default class TodosList extends React.Component<Props, State> {
                             fontSize: 20,
                             color: 'red',
                         }}>
-                            due: {todo.dueDate === null ? "No date" : todo.dueDate.toLocaleString()}
+                            due: {dateStr}
                         </b>
                     </div>
                     <EditableText

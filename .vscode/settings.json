@@ -15,7 +15,7 @@
 		".vscode/": true,
 		".gitignore": true,
 		"tslint.json": false,
-		"README.md": true,
+		"README.md": false,
 		"package-lock.json": true
 	},
 	"typescript.tsdk": "./node_modules/typescript/lib"

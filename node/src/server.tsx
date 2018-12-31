@@ -97,7 +97,7 @@ async function handleRender(req, res) {
                         id: '10',
                         name: 'complete me!',
                         done: false,
-                        dueDate: null
+                        dueDate: new Date(),
                     },
                 ],
             },
